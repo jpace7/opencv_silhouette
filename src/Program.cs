@@ -29,13 +29,7 @@ namespace eTest
             img2gray = img.Convert<Gray, Byte>();
 
 
-
-            //var faces = grayframe.DetectHaarCascade(haar, 1.20, 2,
-            //                        HAAR_DETECTION_TYPE.DO_CANNY_PRUNING,
-            //                        new Size(25, 25))[0];
-
-
-
+           
             Mat smoothedFrame = new Mat();
             CvInvoke.GaussianBlur(img, smoothedFrame, new Size(3, 3), 1);
             img3 = img2gray.AbsDiff(smoothedFrame.ToImage<Gray, Byte>());//.Convert<Gray, Byte>());
@@ -43,30 +37,27 @@ namespace eTest
  
             
 
-            Image<Gray, Byte> mask = new Image<Gray, byte>(img.Width + 2, img.Height + 2);
 
 
+            //Using the Threshold methond  wiht not blur or Absdiff
             Mat img4 = new Mat();
- 
             CvInvoke.Threshold(img2gray, img4, 40, 300, ThresholdType.Binary);
 
-            Mat img6 = img4.Clone();
-
-            Mat img8 = new Mat();
 
            
             VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
 
             IOutputArray hierarchy = null;
 
-         //   CvInvoke.FindContours(img, contours, hierarchy, RetrType.Tree, ChainApproxMethod.ChainApproxSimple);
+       
 
             Rectangle rect = new Rectangle();
 
+            
+            //Saved Images to compare
             img4.Save("Threshold.jpg");
-         
             img3.Save("processed.jpg");
-            img6.Save("contour.jpg");
+
 
 
 
@@ -82,13 +73,10 @@ namespace eTest
             img_final.Save("sobel.jpg");
 
 
-
+            // Using Canny
             Image<Gray, Byte> Ncanny;
-
             Ncanny = img2gray.Canny(10, 60);
-            //grayImage.Sobel(int xorder, intyorder, int aptureSize)
             Ncanny.Sobel(1, 0, 3);
-
             Ncanny.Save("img2gray.jpg");
 
 
